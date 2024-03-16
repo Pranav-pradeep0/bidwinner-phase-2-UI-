@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import Upload from "../assets/Upload.svg";
 import { X } from "@phosphor-icons/react";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -28,6 +29,29 @@ interface UploadFileModalProps {
 
 const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, setOpen }) => {
   const [file, setFile] = useState(null);
+
+  const handleUpload = async () => {
+    try {
+
+      const formData = new FormData();
+      formData.append("app_token", "n4hBAXMO0t3eo1IYAEd3");
+      formData.append("pdf_file", file ? file : "");
+
+      const response = await axios.post(
+        "http://192.168.1.19:8000/add-convert-pdf-image/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("API Response:", response.data);
+    } catch (error) {
+      console.error("Error while uploading PDF file:", error);
+    }
+  };
 
   // const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -49,6 +73,8 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, setOpen }) => {
   const preventDefault = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
+
+  console.log(file);
 
   return (
     <Box>
@@ -136,6 +162,7 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, setOpen }) => {
             </Box>
           </Box>
           <Button
+            onClick={handleUpload}
             sx={{
               display: "flex",
               marginBottom: "20px",
