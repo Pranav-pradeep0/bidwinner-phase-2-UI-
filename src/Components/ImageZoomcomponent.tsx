@@ -22,22 +22,20 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
     end: Coordinate | null;
   } | null>(null);
 
-  const [rectCoordinates, setRectCoordinates] = useState<Coordinate>({
-    top: 0,
-    left: 0,
-  });
+  const [rectCoordinates, setRectCoordinates] = useState({});
 
   console.log(rectCoordinates);
 
-  const [nodes, setNodes] = useState({
+  const nodes = {
     pan: true,
     dot: false,
     rectangleSelect: true,
-  });
+  };
+  
   const [clickCoordinates, setClickCoordinates] = useState<Coordinate[]>([]);
 
-    const cursor = "default";
-    
+  const cursor = "default";
+
   const [position, setPosition] = useState({
     oldX: 0,
     oldY: 0,
@@ -81,7 +79,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
       const scaleY = image!.height / rect.height;
       const x = (e.clientX - rect.left) * scaleX;
       const y = (e.clientY - rect.top) * scaleY;
-      setRectCoordinates({ top: x, left: y });
+      setRectCoordinates((prev: any) => ({ ...prev, topStart: x, topLeft: y }));
 
       const top = (y / dimensions?.height!) * 100;
       const left = (x / dimensions?.width!) * 100;
@@ -104,7 +102,11 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
     const scaleY = image!.height / rect.height;
     const x = (e.clientX - rect.left) * scaleX;
     const y = (e.clientY - rect.top) * scaleY;
-    setRectCoordinates({ top: x, left: y });
+    setRectCoordinates((prev: any) => ({
+      ...prev,
+      bottomEnd: x,
+      bottomRight: y,
+    }));
 
     const top = (y / dimensions?.height!) * 100;
     const left = (x / dimensions?.width!) * 100;
@@ -183,9 +185,11 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
 
   console.log(isDrawing);
 
+  console.log("coordinates", rectCoordinates);
+
   return (
     <>
-      <div>
+      {/* <div>
         <div>Dot Count {clickCoordinates.length}</div>
         <button onClick={() => setNodes((prev) => ({ ...prev, dot: true }))}>
           add dot
@@ -193,7 +197,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
         <button onClick={() => setNodes((prev) => ({ ...prev, dot: false }))}>
           stop dot
         </button>
-      </div>
+      </div> */}
       <div
         ref={containerRef}
         onMouseDown={onMouseDown}
@@ -202,7 +206,6 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
           overflow: "hidden",
           height: "500px",
           width: "800px",
-          border: "1px solid gray",
           position: "relative",
         }}
       >
@@ -249,7 +252,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
                 top: `${Math.min(rectStart.top, rectEnd.top)}%`,
                 width: `${Math.abs(rectStart.left - rectEnd.left)}%`,
                 height: `${Math.abs(rectStart.top - rectEnd.top)}%`,
-                border: "2px solid red",
+                border: `${position.z < 4 ? "2px" : "0.8px"} solid red`,
               }}
             />
           )}
@@ -260,17 +263,20 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
               style={{
                 position: "absolute",
                 left: `${Math.min(
-                  finalRect.start!.left,
-                  finalRect.end!.left
+                  finalRect?.start!?.left,
+                  finalRect?.end!?.left
                 )}%`,
-                top: `${Math.min(finalRect.start!.top, finalRect.end!.top)}%`,
+                top: `${Math.min(
+                  finalRect?.start!?.top,
+                  finalRect?.end!?.top
+                )}%`,
                 width: `${Math.abs(
-                  finalRect.start!.left - finalRect.end!.left
+                  finalRect?.start!?.left - finalRect?.end!?.left
                 )}%`,
                 height: `${Math.abs(
-                  finalRect.start!.top - finalRect.end!.top
+                  finalRect?.start!?.top - finalRect?.end!?.top
                 )}%`,
-                border: "2px solid red",
+                border: `${position.z < 4 ? "2px" : "0.8px"} dashed red`,
               }}
             />
           )}

@@ -17,11 +17,11 @@ import {
   MagnifyingGlassPlus,
   X,
 } from "@phosphor-icons/react";
-import ReactCrop, { type Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import SECURITY from '../assets/SECURITY.png'
-import SECURITY2 from '../assets/SECURITY2.png'
-import FLOOR from '../assets/FLOOR.png'
+import SECURITY from "../assets/SECURITY.png";
+import SECURITY2 from "../assets/SECURITY2.png";
+import FLOOR from "../assets/FLOOR.png";
+import ImageZoomcomponent from "./ImageZoomcomponent";
 
 const style = {
   position: "absolute" as "absolute",
@@ -103,12 +103,8 @@ const AutoRenameModal = () => {
       setPageRange(value);
     }
   };
-  
-  const dummyImages = [
-    SECURITY,
-    SECURITY2,
-    FLOOR
-  ];
+
+  const dummyImages = [SECURITY, SECURITY2, FLOOR];
 
   const handleNextSlide = () => {
     setCurrentIndex((prevIndex) =>
@@ -122,9 +118,6 @@ const AutoRenameModal = () => {
     );
   };
 
-  const [crop, setCrop] = useState<Crop>();
-
-  console.log(crop);
 
   return (
     <Box>
@@ -191,7 +184,7 @@ const AutoRenameModal = () => {
                 transition: "transform 0.5s ease",
               }}
             >
-              <ReactCrop crop={crop} onChange={(c: any) => setCrop(c)}>
+              {/* <ReactCrop crop={crop} onChange={(c: any) => setCrop(c)}>
                 <img
                   src={dummyImages[currentIndex]}
                   alt={`Image ${currentIndex + 1}`}
@@ -200,7 +193,10 @@ const AutoRenameModal = () => {
                     maxHeight: "400px",
                   }}
                 />
-              </ReactCrop>
+              </ReactCrop> */}
+              <ImageZoomcomponent
+                src={dummyImages[currentIndex]}
+              ></ImageZoomcomponent>
             </Box>
           </Box>
           <Box
