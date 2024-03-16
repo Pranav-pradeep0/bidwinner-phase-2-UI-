@@ -103,13 +103,7 @@ const AutoRenameModal = () => {
       setPageRange(value);
     }
   };
-
-  // const dummyImages = [
-  //   "https://dummyimage.com/760x400/919191/000000",
-  //   "https://dummyimage.com/760x400/000/fff",
-  //   "https://dummyimage.com/760x400/1876db/fff",
-  // ];
-
+  
   const dummyImages = [
     SECURITY,
     SECURITY2,
