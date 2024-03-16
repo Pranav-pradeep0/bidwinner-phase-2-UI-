@@ -30,8 +30,9 @@ const data: dataProps[] = [
 const DocumentAccordians = () => {
   return (
     <Box>
-      {data?.map((data) => (
+      {data?.map((data, ind) => (
         <Accordion
+          key={ind}
           sx={{
             boxShadow: "none",
             "::before": {
@@ -54,7 +55,7 @@ const DocumentAccordians = () => {
           </AccordionSummary>
           <AccordionDetails>
             {data?.items?.map((items) => (
-              <Box>{items}</Box>
+            <Box sx={{padding:"10px 5px" ,marginBottom:"5px",cursor:"pointer", ':hover':{backgroundColor:"#f2f6f9"}}}>{items}</Box>
             ))}
           </AccordionDetails>
         </Accordion>
