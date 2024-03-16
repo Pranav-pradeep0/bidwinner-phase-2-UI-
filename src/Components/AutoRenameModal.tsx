@@ -22,6 +22,11 @@ import SECURITY from "../assets/SECURITY.png";
 import SECURITY2 from "../assets/SECURITY2.png";
 import FLOOR from "../assets/FLOOR.png";
 import ImageZoomcomponent from "./ImageZoomcomponent";
+import axios from "axios";
+
+
+const BASE_URL = "http://192.168.1.19:8000/";
+const TOKEN = "9S2yi7E4CwR3T4XnUu08";
 
 const style = {
   position: "absolute" as "absolute",
@@ -59,6 +64,8 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
   const [nestedOpen, setNestedOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(1);
+  const [rectCoordinates, setRectCoordinates] = useState({});
+
 
   const [pageRange, setPageRange] = useState("");
   // const [selectedImage, setSelectedImage] = useState("");
@@ -122,6 +129,26 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
       prevIndex === 0 ? dummyImages.length - 1 : prevIndex - 1
     );
   };
+  const handleUploadPDF = async () => {
+
+    const values =rectCoordinates
+    console.log(values);
+    
+    // const data = {
+    //   app_token:TOKEN,
+    //   pdf_id:”15”,
+    //   coords:"6550,1212,5454,8778",
+    // }
+
+    // try {
+    //   const res = await axios.post(`${BASE_URL}/add-auto-rename-image`, data)
+    //   console.log(res.data);
+
+    // } catch (err) {
+    //   console.log(err);
+
+    // }
+  }
 
   return (
     <Box>
@@ -200,6 +227,9 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
               </ReactCrop> */}
               <ImageZoomcomponent
                 src={dummyImages[currentIndex]}
+                rectCoordinates={rectCoordinates}
+                setRectCoordinates={setRectCoordinates}
+
               ></ImageZoomcomponent>
             </Box>
           </Box>
@@ -348,6 +378,7 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
                     "linear-gradient(95.67deg, #4776E6 0%, #7B54E9 95.18%)",
                 }}
                 variant="contained"
+                onClick={handleUploadPDF}
               >
                 Apply
               </Button>
