@@ -8,9 +8,11 @@ interface Coordinate {
 
 interface ImageZoomProps {
   src: string;
+  rectCoordinates: any;
+  setRectCoordinates: any
 }
 
-const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
+const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src, rectCoordinates, setRectCoordinates }) => {
   const [dimensions] = useImageSize(src);
   const [isPanning, setPanning] = useState(false);
   const [image, setImage] = useState<{ width: number; height: number }>();
@@ -22,7 +24,6 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
     end: Coordinate | null;
   } | null>(null);
 
-  const [rectCoordinates, setRectCoordinates] = useState({});
 
   console.log(rectCoordinates);
 
@@ -31,7 +32,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
     dot: false,
     rectangleSelect: true,
   };
-  
+
   const [clickCoordinates, setClickCoordinates] = useState<Coordinate[]>([]);
 
   const cursor = "default";
@@ -147,7 +148,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src }) => {
           ((image!.height * rect.width) / image!.width / 2 -
             e.clientY +
             rect.y) *
-            sign,
+          sign,
         z: position.z * scale,
       });
 
