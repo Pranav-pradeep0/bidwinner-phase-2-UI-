@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Box,
-  Button,
   Divider,
   IconButton,
   Input,
@@ -22,11 +21,15 @@ const style = {
   borderRadius: "12px",
 };
 
-const UploadFileModal: React.FC = () => {
-  const [open, setOpen] = useState(false);
+interface UploadFileModalProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const UploadFileModal: React.FC<UploadFileModalProps> = ({open ,setOpen}) => {
   const [files, setFiles] = useState<File[]>([]);
 
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     setFiles([]); // Reset files when closing modal
@@ -55,7 +58,6 @@ const UploadFileModal: React.FC = () => {
 
   return (
     <Box>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         open={open}
         onClose={handleClose}

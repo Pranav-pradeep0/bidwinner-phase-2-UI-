@@ -49,8 +49,13 @@ const childStyle = {
   borderRadius: "12px",
 };
 
-const AutoRenameModal = () => {
-  const [open, setOpen] = useState(false);
+interface RenameModalProps {
+  open: boolean;
+  setOpen: any;
+}
+
+const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
+  // const [open, setOpen] = useState(false);
   const [nestedOpen, setNestedOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(1);
@@ -58,9 +63,9 @@ const AutoRenameModal = () => {
   const [pageRange, setPageRange] = useState("");
   // const [selectedImage, setSelectedImage] = useState("");
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -118,10 +123,9 @@ const AutoRenameModal = () => {
     );
   };
 
-
   return (
     <Box>
-      <Button onClick={handleOpen}>Open modal</Button>
+      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         open={open}
         onClose={handleClose}
