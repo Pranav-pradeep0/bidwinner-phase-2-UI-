@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import {
   Box,
+  Button,
   Divider,
   IconButton,
-  Input,
   Modal,
   Typography,
 } from "@mui/material";
@@ -26,30 +26,24 @@ interface UploadFileModalProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const UploadFileModal: React.FC<UploadFileModalProps> = ({open ,setOpen}) => {
-  const [files, setFiles] = useState<File[]>([]);
+const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, setOpen }) => {
+  const [file, setFile] = useState(null);
 
   // const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setFiles([]); // Reset files when closing modal
+    setFile(null); // Reset file when closing modal
   };
 
-  const handleFileInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (event.target.files) {
-      const selectedFiles = Array.from(event.target.files);
-      setFiles([...files, ...selectedFiles]);
-    }
+  const handleFileInputChange = (event: any) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
   };
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (event: any) => {
     event.preventDefault();
-    if (event.dataTransfer.files) {
-      const droppedFiles = Array.from(event.dataTransfer.files);
-      setFiles([...files, ...droppedFiles]);
-    }
+    const droppedFile = event.dataTransfer.files[0];
+    setFile(droppedFile);
   };
 
   const preventDefault = (event: React.DragEvent<HTMLDivElement>) => {
@@ -109,8 +103,9 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({open ,setOpen}) => {
                 placeItems: "center",
               }}
             >
-              <Input
+              <input
                 type="file"
+                accept="application/pdf"
                 id="fileInput"
                 onChange={handleFileInputChange}
                 style={{ display: "none" }}
@@ -140,16 +135,16 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({open ,setOpen}) => {
               </label>
             </Box>
           </Box>
-          {files.length > 0 && (
-            <Box sx={{ textAlign: "center", marginTop: "20px" }}>
-              <Typography variant="subtitle1">Selected Files:</Typography>
-              <ul>
-                {files.map((file, index) => (
-                  <li key={index}>{file.name}</li>
-                ))}
-              </ul>
-            </Box>
-          )}
+          <Button
+            sx={{
+              display: "flex",
+              marginBottom: "20px",
+              marginInline: "auto",
+            }}
+            variant="contained"
+          >
+            Upload
+          </Button>
         </Box>
       </Modal>
     </Box>

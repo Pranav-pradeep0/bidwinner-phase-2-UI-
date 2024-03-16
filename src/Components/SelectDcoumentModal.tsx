@@ -1,4 +1,4 @@
-import { Box, Button, Modal } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import React from "react";
 import DocumentSerchBar from "./SelectDocumentComponents/DocumentSerchBar";
 import DocumentAccordians from "./SelectDocumentComponents/DocumentAccordians";
@@ -15,11 +15,14 @@ const style = {
 };
 
 interface DocumentModalProps {
-  open: boolean,
-  setOpen: any
+  open: boolean;
+  setOpen: any;
 }
 
-const SelectDcoumentModal: React.FC<DocumentModalProps> = ({open, setOpen}) => {
+const SelectDcoumentModal: React.FC<DocumentModalProps> = ({
+  open,
+  setOpen,
+}) => {
   // const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -32,8 +35,8 @@ const SelectDcoumentModal: React.FC<DocumentModalProps> = ({open, setOpen}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-                  <DocumentSerchBar />
-                  <DocumentAccordians/>
+          <DocumentSerchBar />
+          <DocumentAccordians />
         </Box>
       </Modal>
     </Box>
