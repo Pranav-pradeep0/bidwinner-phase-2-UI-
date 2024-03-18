@@ -21,6 +21,8 @@ const data: dataProps[] = [
   },
 ];
 
+// const [expanded,setExpanded]=useState(false)
+
 const DocumentAccordians = () => {
   const fetchData = async () => {
     console.log("abc");
@@ -44,6 +46,7 @@ const DocumentAccordians = () => {
     <Box>
       {data?.map((data, ind) => (
         <Accordion
+        // expanded={expanded === 'panel1'}
           key={ind}
           sx={{
             marginTop: "20px",
