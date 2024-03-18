@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -23,10 +23,6 @@ import SECURITY2 from "../assets/SECURITY2.png";
 import FLOOR from "../assets/FLOOR.png";
 import ImageZoomcomponent from "./ImageZoomcomponent";
 import axios from "axios";
-
-
-const BASE_URL = "http://192.168.1.19:8000/";
-const TOKEN = "9S2yi7E4CwR3T4XnUu08";
 
 const style = {
   position: "absolute" as "absolute",
@@ -64,8 +60,12 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
   const [nestedOpen, setNestedOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(1);
-  const [rectCoordinates, setRectCoordinates] = useState({});
-
+  const [rectCoordinates, setRectCoordinates] = useState({
+    topX: "",
+    topY: "",
+    bottomX: "",
+    bottomY: "",
+  });
 
   const [pageRange, setPageRange] = useState("");
   // const [selectedImage, setSelectedImage] = useState("");
@@ -129,26 +129,55 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
       prevIndex === 0 ? dummyImages.length - 1 : prevIndex - 1
     );
   };
+
+  const [coords, setCoords] = useState({
+    TopX: "",
+    TopY: "",
+    BottomX: "",
+    BottomY: "",
+  });
+
+  useEffect(() => {
+    const newCoords = { ...coords };
+
+    if (rectCoordinates.bottomX > rectCoordinates.topX) {
+      newCoords.TopX = rectCoordinates.bottomX;
+      newCoords.BottomX = rectCoordinates.topX;
+    } else {
+      newCoords.TopX = rectCoordinates.topX;
+      newCoords.BottomX = rectCoordinates.bottomX;
+    }
+
+    if (rectCoordinates.bottomY > rectCoordinates.topY) {
+      newCoords.TopY = rectCoordinates.bottomY;
+      newCoords.BottomY = rectCoordinates.topY;
+    } else {
+      newCoords.TopY = rectCoordinates.topY;
+      newCoords.BottomY = rectCoordinates.bottomY;
+    }
+
+    setCoords(newCoords);
+  }, [rectCoordinates]);
+
+  console.log(coords);
+
   const handleUploadPDF = async () => {
+    const data = {
+      app_token: "wda1E2CphYPXTsELRe0D",
+      pdf_id: "",
+      coords: coords,
+    };
 
-    // const values =rectCoordinates
-
-    
-    // const data = {
-    //   app_token:TOKEN,
-    //   pdf_id:”15”,
-    //   coords:"6550,1212,5454,8778",
-    // }
-
-    // try {
-    //   const res = await axios.post(`${BASE_URL}/add-auto-rename-image`, data)
-    //   console.log(res.data);
-
-    // } catch (err) {
-    //   console.log(err);
-
-    // }
-  }
+    try {
+      const res = await axios.post(
+        "http://64.227.165.222:8000/add-auto-rename-image",
+        data
+      );
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Box>
@@ -215,22 +244,11 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
                 transition: "transform 0.5s ease",
               }}
             >
-              {/* <ReactCrop crop={crop} onChange={(c: any) => setCrop(c)}>
-                <img
-                  src={dummyImages[currentIndex]}
-                  alt={`Image ${currentIndex + 1}`}
-                  style={{
-                    width: "100%",
-                    maxHeight: "400px",
-                  }}
-                />
-              </ReactCrop> */}
               <ImageZoomcomponent
                 src={dummyImages[currentIndex]}
                 rectCoordinates={rectCoordinates}
                 setRectCoordinates={setRectCoordinates}
-
-              ></ImageZoomcomponent>
+              />
             </Box>
           </Box>
           <Box

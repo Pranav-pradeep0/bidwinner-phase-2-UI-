@@ -9,10 +9,14 @@ interface Coordinate {
 interface ImageZoomProps {
   src: string;
   rectCoordinates: any;
-  setRectCoordinates: any
+  setRectCoordinates: any;
 }
 
-const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src, rectCoordinates, setRectCoordinates }) => {
+const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
+  src,
+  // rectCoordinates,
+  setRectCoordinates,
+}) => {
   const [dimensions] = useImageSize(src);
   const [isPanning, setPanning] = useState(false);
   const [image, setImage] = useState<{ width: number; height: number }>();
@@ -24,8 +28,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src, rectCoordinates, se
     end: Coordinate | null;
   } | null>(null);
 
-
-  console.log(rectCoordinates);
+  // console.log(rectCoordinates);
 
   const nodes = {
     pan: true,
@@ -80,7 +83,11 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src, rectCoordinates, se
       const scaleY = image!.height / rect.height;
       const x = (e.clientX - rect.left) * scaleX;
       const y = (e.clientY - rect.top) * scaleY;
-      setRectCoordinates((prev: any) => ({ ...prev, topStart: x, topLeft: y }));
+      setRectCoordinates((prev: any) => ({
+        ...prev,
+        topX: x,
+        topY: y,
+      }));
 
       const top = (y / dimensions?.height!) * 100;
       const left = (x / dimensions?.width!) * 100;
@@ -105,8 +112,8 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src, rectCoordinates, se
     const y = (e.clientY - rect.top) * scaleY;
     setRectCoordinates((prev: any) => ({
       ...prev,
-      bottomEnd: x,
-      bottomRight: y,
+      bottomX: x,
+      bottomY: y,
     }));
 
     const top = (y / dimensions?.height!) * 100;
@@ -148,7 +155,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src, rectCoordinates, se
           ((image!.height * rect.width) / image!.width / 2 -
             e.clientY +
             rect.y) *
-          sign,
+            sign,
         z: position.z * scale,
       });
 
@@ -184,9 +191,9 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({ src, rectCoordinates, se
     }
   });
 
-  console.log(isDrawing);
+  // console.log(isDrawing);
 
-  console.log("coordinates", rectCoordinates);
+  // console.log("coordinates", rectCoordinates);
 
   return (
     <>
