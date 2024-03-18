@@ -6,47 +6,45 @@ import {
   Typography,
 } from "@mui/material";
 import { CaretDown, FolderNotch } from "@phosphor-icons/react";
-import axios from "axios";
-import { useEffect } from "react";
+
+import Drawing1 from "../../assets/SECURITY.png"
+import Drawing2 from "../../assets/SECURITY2.png"
+import Drawing3 from "../../assets/FLOOR.png"
+import { useState } from "react";
+// import { useState } from "react";
 
 interface dataProps {
   title: string;
-  items: string[];
+  items: any
 }
 
 const data: dataProps[] = [
   {
     title: "Al Hasan Building Drawing Electrical Estimation Document.pdf",
-    items: ["Page No 1", "Page No 2", "Page No 3", "Page No 4", "Page No 5"],
+    items: [{ title: "Page No 1", url: Drawing1 }, { title: "Page No 2", url: Drawing2 }, { title: "Page No 3", url: Drawing3 }],
+  },
+  {
+    title: "Al Jaseera Appartment Drawing Electrical Estimation Document.pdf",
+    items: [{ title: "Page No 1", url: Drawing1 }, { title: "Page No 2", url: Drawing2 }, { title: "Page No 3", url: Drawing3 }],
   },
 ];
 
 // const [expanded,setExpanded]=useState(false)
+interface DocumentModalProps {
+  setImgURL: any
+}
+const DocumentAccordians: React.FC<DocumentModalProps> = ({ setImgURL }) => {
+  const [title, setTitle] = useState("")
 
-const DocumentAccordians = () => {
-  const fetchData = async () => {
-    console.log("abc");
-
-    try {
-      const response = await axios.post(
-        "http://64.227.165.222:8000/list-pdf-details/",
-        { app_token: "wda1E2CphYPXTsELRe0D" }
-      );
-      console.log("response", response.data);
-    } catch (error) {
-      console.error("Error while fetching document details:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+  const handleClickTitle = (title: string, url: string) => {
+    setImgURL(url)
+    setTitle(title)
+  }
   return (
     <Box>
       {data?.map((data, ind) => (
         <Accordion
-        // expanded={expanded === 'panel1'}
+          // expanded={expanded === 'panel1'}
           key={ind}
           sx={{
             marginTop: "20px",
@@ -70,17 +68,11 @@ const DocumentAccordians = () => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {data?.items?.map((items, ind) => (
-              <Box
-                key={ind}
-                sx={{
-                  padding: "10px 5px",
-                  marginBottom: "5px",
-                  cursor: "pointer",
-                  ":hover": { backgroundColor: "#f2f6f9" },
-                }}
-              >
-                {items}
+            {data?.items?.map((items: any, ind: number) => (
+              <Box key={ind}
+              sx={{ padding: "10px 5px", marginBottom: "5px" , cursor: "pointer" , backgroundColor: title === items.title ? "#f2f6f9" : "", ':hover': { backgroundColor: "#f2f6f9" } }}
+                onClick={() => handleClickTitle(items.title, items.url)} >
+                {items.title}
               </Box>
             ))}
           </AccordionDetails>
