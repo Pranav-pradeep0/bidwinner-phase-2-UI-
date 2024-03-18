@@ -131,8 +131,8 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
   };
   const handleUploadPDF = async () => {
 
-    const values =rectCoordinates
-    console.log(values);
+    // const values =rectCoordinates
+
     
     // const data = {
     //   app_token:TOKEN,

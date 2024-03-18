@@ -3,6 +3,7 @@ import { useState } from "react";
 import UploadFileModal from "./UploadFileModal";
 import AutoRenameModal from "./AutoRenameModal";
 import SelectDcoumentModal from "./SelectDcoumentModal";
+import ButtonGradient from "./reusableComponents/Button";
 
 const DisplayPage = () => {
   const [UploadModalopen, setUploadModalOpen] = useState(false);
@@ -22,7 +23,7 @@ const DisplayPage = () => {
       }}
     >
       <Box>
-        <Button
+        {/* <Button
           onClick={() => setUploadModalOpen(true)}
           sx={{
             color: "white",
@@ -33,10 +34,12 @@ const DisplayPage = () => {
           }}
         >
           Upload Pdf
-        </Button>
+        </Button> */}
+
+        <ButtonGradient handleClick={() => setUploadModalOpen(true)} title="Upload Pdf" />
       </Box>
       <Box>
-        <Button
+        {/* <Button
           onClick={() => setListModalOpen(true)}
           sx={{
             color: "white",
@@ -47,10 +50,12 @@ const DisplayPage = () => {
           }}
         >
           List Pdf
-        </Button>
+        </Button> */}
+        <ButtonGradient handleClick={() => setListModalOpen(true)} title="List Pdf" />
+
       </Box>
       <Box>
-        <Button
+        {/* <Button
           onClick={() => setRenameModalState(true)}
           sx={{
             color: "white",
@@ -61,7 +66,9 @@ const DisplayPage = () => {
           }}
         >
           Rename
-        </Button>
+        </Button> */}
+        <ButtonGradient handleClick={() => setRenameModalState(true)} title="Rename" />
+
       </Box>
       <Box>
         <UploadFileModal open={UploadModalopen} setOpen={setUploadModalOpen} />

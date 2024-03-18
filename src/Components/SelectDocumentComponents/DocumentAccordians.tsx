@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { CaretDown, FolderNotch } from "@phosphor-icons/react";
+import { useState } from "react";
 
 interface dataProps {
   title: string;
@@ -27,11 +28,14 @@ const data: dataProps[] = [
   },
 ];
 
+// const [expanded,setExpanded]=useState(false)
+
 const DocumentAccordians = () => {
   return (
     <Box>
       {data?.map((data, ind) => (
         <Accordion
+        // expanded={expanded === 'panel1'}
           key={ind}
           sx={{
             boxShadow: "none",
