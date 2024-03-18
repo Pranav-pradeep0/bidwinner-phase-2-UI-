@@ -32,13 +32,12 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, setOpen }) => {
 
   const handleUpload = async () => {
     try {
-
       const formData = new FormData();
-      formData.append("app_token", "n4hBAXMO0t3eo1IYAEd3");
+      formData.append("app_token", "wda1E2CphYPXTsELRe0D");
       formData.append("pdf_file", file ? file : "");
 
       const response = await axios.post(
-        "http://192.168.1.19:8000/add-convert-pdf-image/",
+        "http://64.227.165.222:8000/add-convert-pdf-image/",
         formData,
         {
           headers: {
@@ -47,7 +46,7 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, setOpen }) => {
         }
       );
 
-      console.log("API Response:", response.data);
+      console.log("API Response:", response);
     } catch (error) {
       console.error("Error while uploading PDF file:", error);
     }
