@@ -1,5 +1,6 @@
 import "./App.css";
-import DisplayPage from "./Components/DisplayPage";
+// import DisplayPage from "./Components/DisplayPage";
+import Toolbar from "./Components/Toolbar";
 // import SelectDcoumentModal from "./Components/SelectDcoumentModal";
 // import UploadFileModal from "./Components/UploadFileModal";
 // import AssemblyInfoModal from "./Components/AssemblyInfoModal";
@@ -16,7 +17,8 @@ function App() {
       {/* <AssemblyInfoModal/> */}
       {/* <UploadFileModal/> */}
       {/* <SelectDcoumentModal/> */}
-      <DisplayPage />
+      {/* <DisplayPage /> */}
+      <Toolbar/>
     </>
   );
 }
