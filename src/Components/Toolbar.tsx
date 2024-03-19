@@ -20,7 +20,7 @@ import {
   TextT,
   XCircle,
 } from "@phosphor-icons/react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 type IconProps = {
   weight?: "fill" | "regular";
@@ -30,6 +30,7 @@ type IconProps = {
 type IconData = {
   name: string;
   icon: any;
+  type: any
 };
 
 const StyledIconButton = styled(IconButton)(() => ({
@@ -40,27 +41,31 @@ const StyledIconButton = styled(IconButton)(() => ({
 }));
 
 const iconData: IconData[] = [
-  { name: "Hand", icon: Hand },
-  { name: "Cursor", icon: Cursor },
-  { name: "SelectionAll", icon: SelectionAll },
-  { name: "Return", icon: ArrowCounterClockwise },
-  { name: "Copy", icon: CopySimple },
-  { name: "Cloud", icon: Cloud },
-  { name: "Text", icon: TextT },
-  { name: "Stamp", icon: Stamp },
-  { name: "Ruler", icon: Ruler },
-  { name: "LineSegment", icon: LineSegment },
-  { name: "Circle", icon: HighlighterCircle },
-  { name: "Note", icon: Note },
-  { name: "Calendar", icon: CalendarCheck },
-  { name: "ArrowsOut", icon: ArrowsOut },
-  { name: "Frame", icon: FrameCorners },
-  { name: "Grid", icon: GridNine },
-  { name: "PIP", icon: PictureInPicture },
-  { name: "Fader", icon: Faders },
+  { name: "Hand", icon: Hand, type: "pan" },
+  { name: "Cursor", icon: Cursor, type: "select" },
+  { name: "SelectionAll", icon: SelectionAll, type: "dot" },
+  { name: "Return", icon: ArrowCounterClockwise, type: "" },
+  { name: "Copy", icon: CopySimple, type: "" },
+  { name: "Cloud", icon: Cloud, type: "" },
+  { name: "Text", icon: TextT, type: "" },
+  { name: "Stamp", icon: Stamp, type: "" },
+  { name: "Ruler", icon: Ruler, type: "" },
+  { name: "LineSegment", icon: LineSegment, type: "" },
+  { name: "Circle", icon: HighlighterCircle, type: "" },
+  { name: "Note", icon: Note, type: "" },
+  { name: "Calendar", icon: CalendarCheck, type: "" },
+  { name: "ArrowsOut", icon: ArrowsOut, type: "" },
+  { name: "Frame", icon: FrameCorners, type: "" },
+  { name: "Grid", icon: GridNine, type: "" },
+  { name: "PIP", icon: PictureInPicture, type: "" },
+  { name: "Fader", icon: Faders, type: "" },
 ];
 
-const Toolbar = () => {
+interface ToolbarProps {
+  setToolMethod: any
+}
+
+const Toolbar: React.FC<ToolbarProps> = ({ setToolMethod }) => {
   const [selectedTool, setSelectedTool] = useState("Cursor");
 
   const onToolSelect = (tool: any) => {
@@ -72,10 +77,48 @@ const Toolbar = () => {
     fill: selectedTool === tool ? "#3153CD" : "inherit",
   });
 
+
+
+  const originalValues = { pan: false, select: false, dot: false }
+
+  const handleChangeTools = (type: any) => {
+    switch (type) {
+      case "pan":
+        setToolMethod(() => {
+          const updatedState: any = { ...originalValues }; // Reset all tools
+          updatedState[type] = true; // Set the specified tool to true
+          return updatedState;
+        });
+        break;
+      case "select":
+        setToolMethod(() => {
+          const updatedState: any = { ...originalValues }; // Reset all tools
+          updatedState[type] = true; // Set the specified tool to true
+          return updatedState;
+        });
+        break;
+      case "dot":
+        setToolMethod(() => {
+          const updatedState: any = { ...originalValues }; // Reset all tools
+          updatedState[type] = true; // Set the specified tool to true
+          return updatedState;
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <Box
       sx={{
         filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+        width: "max-content",
+        position: "fixed",
+        left: "50%",
+        bottom: "100px",
+        background: "white",
+        transform: "translate(-50%,0)"
       }}
     >
       <Box
@@ -90,12 +133,11 @@ const Toolbar = () => {
           border: "rgba(0, 0, 0, 0.1) 1px solid",
         }}
       >
-        {iconData?.map(({ name, icon: Icon }) => (
-          <StyledIconButton onClick={() => onToolSelect(name)}>
-            <Icon {...setToolProperty(name)} />
+        {iconData?.map(({ name, icon: Icon, type }) => (
+          <StyledIconButton onClick={() => onToolSelect(name)} key={name}>
+            <Icon {...setToolProperty(name)} onClick={() => handleChangeTools(type)} />
           </StyledIconButton>
         ))}
-
         <Box
           sx={{
             display: "flex",

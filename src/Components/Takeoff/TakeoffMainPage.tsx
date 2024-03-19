@@ -3,6 +3,7 @@ import Drawing from "../../assets/SECURITY.png";
 import { Box, Button, MenuItem, Select } from "@mui/material";
 import { CaretLeft, CaretRight, FileArrowDown, ShareNetwork } from "@phosphor-icons/react";
 import ImageZoomcomponent from "../ImageZoomcomponent";
+import Toolbar from "../Toolbar";
 
 const styles = {
   container: { width: "100%", height: "100%" },
@@ -38,8 +39,15 @@ const GrayBox = ({ children }: { children: ReactNode }) => {
 }
 
 const TakeoffMainPage = () => {
+
+  const [toolMethods, setToolMethod] = useState({
+    pan: false,
+    select: false,
+    dot: false
+  })
+
   const [rectCoordinates, setRectCoordinates] = useState({});
-  console.log(rectCoordinates);
+  // console.log(rectCoordinates);
 
   return (
     <div style={styles.container}>
@@ -66,7 +74,7 @@ const TakeoffMainPage = () => {
           <Button color="primary" variant="contained" sx={{
             '&.MuiButton-contained': {
               boxShadow: 'none !important',
-              borderRadius:"5px"
+              borderRadius: "5px"
             }
           }} >
             Compare
@@ -96,7 +104,9 @@ const TakeoffMainPage = () => {
       <ImageZoomcomponent
         src={Drawing}
         setRectCoordinates={setRectCoordinates}
+        toolMethods={toolMethods}
       />
+      <Toolbar setToolMethod={setToolMethod} />
     </div >
   );
 };
