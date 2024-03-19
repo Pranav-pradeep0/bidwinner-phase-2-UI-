@@ -73,7 +73,11 @@ const Toolbar = () => {
   });
 
   return (
-    <Box>
+    <Box
+      sx={{
+        filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -81,9 +85,9 @@ const Toolbar = () => {
           padding: "10px 20px",
           borderRadius: "10px",
           position: "relative",
-          zIndex: 10,
+          zIndex: 1,
           boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-          border: "rgba(0, 0, 0, 1) 1px solid",
+          border: "rgba(0, 0, 0, 0.1) 1px solid",
         }}
       >
         {iconData?.map(({ name, icon: Icon }) => (
@@ -101,11 +105,11 @@ const Toolbar = () => {
             top: -47,
             height: "45px",
             borderRadius: "24px",
-            zIndex: 1,
             borderBottomLeftRadius: "0px",
             borderBottomRightRadius: "0px",
-            border: "rgba(0, 0, 0, 1) 1px solid",
+            border: "rgba(0, 0, 0, 0.1) 1px solid",
             borderBottom: "none",
+            // boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           }}
         >
           <Button

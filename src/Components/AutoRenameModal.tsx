@@ -245,7 +245,7 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
             >
               <ImageZoomcomponent
                 src={dummyImages[currentIndex]}
-                rectCoordinates={rectCoordinates}
+                // rectCoordinates={rectCoordinates}
                 setRectCoordinates={setRectCoordinates}
               />
             </Box>
