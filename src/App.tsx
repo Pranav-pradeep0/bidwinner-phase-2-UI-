@@ -1,12 +1,12 @@
 import "./App.css";
 // import DisplayPage from "./Components/DisplayPage";
-import Toolbar from "./Components/Toolbar";
 // import SelectDcoumentModal from "./Components/SelectDcoumentModal";
 // import UploadFileModal from "./Components/UploadFileModal";
 // import AssemblyInfoModal from "./Components/AssemblyInfoModal";
 // import AutoRenameModal from "./Components/AutoRenameModal";
 // import DrawingScaleModal from "./Components/DrawingScaleModal";
 // import ShareAsEmailModal from "./Components/ShareAsEmailModal";
+import TakeoffMainPage from "../src/Components/Takeoff/TakeoffMainPage"
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
       {/* <UploadFileModal/> */}
       {/* <SelectDcoumentModal/> */}
       {/* <DisplayPage /> */}
-      <Toolbar/>
+      <TakeoffMainPage />
     </>
   );
 }

@@ -8,13 +8,11 @@ interface Coordinate {
 
 interface ImageZoomProps {
   src: string;
-  rectCoordinates: any;
   setRectCoordinates: any;
 }
 
 const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
   src,
-  // rectCoordinates,
   setRectCoordinates,
 }) => {
   const [dimensions] = useImageSize(src);
@@ -155,7 +153,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
           ((image!.height * rect.width) / image!.width / 2 -
             e.clientY +
             rect.y) *
-            sign,
+          sign,
         z: position.z * scale,
       });
 
@@ -212,8 +210,9 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
         onWheel={onWheel}
         style={{
           overflow: "hidden",
-          height: "500px",
-          width: "800px",
+          height: "100%",
+          minHeight: "600px",
+          width: "100%",
           position: "relative",
         }}
       >
