@@ -31,8 +31,8 @@ const AssemblyInfoModal = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setOpen(false)
-    setAnchorEl(null)
+    setOpen(false);
+    setAnchorEl(null);
   };
 
   const [value, setValue] = useState("1");
@@ -72,7 +72,10 @@ const AssemblyInfoModal = () => {
             >
               Assembly Info
             </Box>
-            <IconButton sx={{ position: "absolute", right: 5, top: 15 }} onClick={handleClose}>
+            <IconButton
+              sx={{ position: "absolute", right: 5, top: 15 }}
+              onClick={handleClose}
+            >
               <X size={30} />
             </IconButton>
           </Box>
@@ -201,7 +204,7 @@ const AssemblyInfoModal = () => {
                 <PartsTab />
               </TabPanel>
               <TabPanel value="3">
-                <Drawings/>
+                <Drawings />
               </TabPanel>
             </TabContext>
           </Box>

@@ -161,13 +161,12 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
 
   console.log(coords);
 
-  const handleUploadPDF = async () => {
+  const handleUploadCoords = async () => {
     const data = {
       app_token: "wda1E2CphYPXTsELRe0D",
       pdf_id: "",
       coords: coords,
     };
-
     try {
       const res = await axios.post(
         "http://64.227.165.222:8000/add-auto-rename-image",
@@ -396,7 +395,7 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
                     "linear-gradient(95.67deg, #4776E6 0%, #7B54E9 95.18%)",
                 }}
                 variant="contained"
-                onClick={handleUploadPDF}
+                onClick={handleUploadCoords}
               >
                 Apply
               </Button>

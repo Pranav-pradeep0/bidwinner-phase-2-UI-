@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { useState } from "react";
 import UploadFileModal from "./UploadFileModal";
 import AutoRenameModal from "./AutoRenameModal";
@@ -23,19 +23,22 @@ const DisplayPage = () => {
       }}
     >
       <Box>
-
-
-        <ButtonGradient handleClick={() => setUploadModalOpen(true)} title="Upload Pdf" />
+        <ButtonGradient
+          handleClick={() => setUploadModalOpen(true)}
+          title="Upload Pdf"
+        />
       </Box>
       <Box>
-
-        <ButtonGradient handleClick={() => setListModalOpen(true)} title="List Pdf" />
-
+        <ButtonGradient
+          handleClick={() => setListModalOpen(true)}
+          title="List Pdf"
+        />
       </Box>
       <Box>
-
-        <ButtonGradient handleClick={() => setRenameModalState(true)} title="Rename" />
-
+        <ButtonGradient
+          handleClick={() => setRenameModalState(true)}
+          title="Rename"
+        />
       </Box>
       <Box>
         <UploadFileModal open={UploadModalopen} setOpen={setUploadModalOpen} />

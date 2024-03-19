@@ -6,11 +6,12 @@ import {
   Typography,
 } from "@mui/material";
 import { CaretDown, FolderNotch } from "@phosphor-icons/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Drawing1 from "../../assets/SECURITY.png";
 import Drawing2 from "../../assets/SECURITY2.png";
 import Drawing3 from "../../assets/FLOOR.png";
+import axios from "axios";
 
 interface dataProps {
   title: string;
@@ -44,19 +45,35 @@ const DocumentAccordians: React.FC<DocumentModalProps> = ({ setImgURL }) => {
   const [expanded, setExpanded] = useState<string | false>(false);
   const [title, setTitle] = useState("");
 
-  const handleChange = (panel: string) => (
-    event: React.SyntheticEvent,
-    isExpanded: boolean
-  ) => {
-    event
-    setExpanded(isExpanded ? panel : false);
-    setTitle(""); // Reset title when accordion is closed
-  };
+  const handleChange =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      event;
+      setExpanded(isExpanded ? panel : false);
+      setTitle("");
+    };
 
   const handleClickTitle = (title: string, url: string) => {
     setImgURL(url);
     setTitle(title);
   };
+
+  const fetchData = async () => {
+    console.log("abc");
+
+    try {
+      const response = await axios.post(
+        "http://64.227.165.222:8000/list-pdf-details/",
+        { app_token: "wda1E2CphYPXTsELRe0D" }
+      );
+      console.log("response", response.data);
+    } catch (error) {
+      console.error("Error while fetching document details:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <Box>
