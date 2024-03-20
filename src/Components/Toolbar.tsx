@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, styled } from "@mui/material";
+import { Box, Button, IconButton, Tooltip, Zoom, styled } from "@mui/material";
 import {
   ArrowCounterClockwise,
   ArrowsOut,
@@ -30,7 +30,7 @@ type IconProps = {
 type IconData = {
   name: string;
   icon: any;
-  type: any
+  type: any;
 };
 
 const StyledIconButton = styled(IconButton)(() => ({
@@ -41,18 +41,18 @@ const StyledIconButton = styled(IconButton)(() => ({
 }));
 
 const iconData: IconData[] = [
-  { name: "Hand", icon: Hand, type: "pan" },
-  { name: "Cursor", icon: Cursor, type: "select" },
-  { name: "SelectionAll", icon: SelectionAll, type: "dot" },
-  { name: "Return", icon: ArrowCounterClockwise, type: "" },
-  { name: "Copy", icon: CopySimple, type: "" },
-  { name: "Cloud", icon: Cloud, type: "" },
-  { name: "Text", icon: TextT, type: "" },
-  { name: "Stamp", icon: Stamp, type: "" },
-  { name: "Ruler", icon: Ruler, type: "" },
-  { name: "LineSegment", icon: LineSegment, type: "" },
+  { name: "Pan", icon: Hand, type: "pan" },
+  { name: "Edit", icon: Cursor, type: "select" },
+  { name: "Multi Select", icon: SelectionAll, type: "dot" },
+  { name: "Undo", icon: ArrowCounterClockwise, type: "" },
+  { name: "Duplicate DWG Area", icon: CopySimple, type: "" },
+  { name: "Cloud Tool", icon: Cloud, type: "" },
+  { name: "Annotations", icon: TextT, type: "" },
+  { name: "Symbol Stamping", icon: Stamp, type: "" },
+  { name: "Quick Measurement", icon: Ruler, type: "" },
+  { name: "Line Tool", icon: LineSegment, type: "" },
   { name: "Circle", icon: HighlighterCircle, type: "" },
-  { name: "Note", icon: Note, type: "" },
+  { name: "Notes", icon: Note, type: "" },
   { name: "Calendar", icon: CalendarCheck, type: "" },
   { name: "ArrowsOut", icon: ArrowsOut, type: "" },
   { name: "Frame", icon: FrameCorners, type: "" },
@@ -62,7 +62,7 @@ const iconData: IconData[] = [
 ];
 
 interface ToolbarProps {
-  setToolMethod: any
+  setToolMethod: any;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({ setToolMethod }) => {
@@ -77,9 +77,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ setToolMethod }) => {
     fill: selectedTool === tool ? "#3153CD" : "inherit",
   });
 
-
-
-  const originalValues = { pan: false, select: false, dot: false }
+  const originalValues = { pan: false, select: false, dot: false };
 
   const handleChangeTools = (type: any) => {
     switch (type) {
@@ -107,7 +105,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ setToolMethod }) => {
       default:
         break;
     }
-  }
+  };
 
   return (
     <Box
@@ -118,7 +116,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ setToolMethod }) => {
         left: "50%",
         bottom: "100px",
         background: "white",
-        transform: "translate(-50%,0)"
+        transform: "translate(-50%,0)",
       }}
     >
       <Box
@@ -134,9 +132,30 @@ const Toolbar: React.FC<ToolbarProps> = ({ setToolMethod }) => {
         }}
       >
         {iconData?.map(({ name, icon: Icon, type }) => (
-          <StyledIconButton onClick={() => onToolSelect(name)} key={name}>
-            <Icon {...setToolProperty(name)} onClick={() => handleChangeTools(type)} />
-          </StyledIconButton>
+          <Tooltip
+            TransitionComponent={Zoom}
+            placement="top"
+            title={name}
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -10],
+                    },
+                  },
+                ],
+              },
+            }}
+          >
+            <StyledIconButton onClick={() => onToolSelect(name)} key={name}>
+              <Icon
+                {...setToolProperty(name)}
+                onClick={() => handleChangeTools(type)}
+              />
+            </StyledIconButton>
+          </Tooltip>
         ))}
         <Box
           sx={{

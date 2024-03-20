@@ -10,6 +10,7 @@ import {
 import Upload from "../assets/Upload.svg";
 import { X } from "@phosphor-icons/react";
 import axios from "axios";
+import { API_TOKEN, BASE_URL } from "../utils/environment";
 
 const style = {
   position: "absolute",
@@ -33,11 +34,11 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, setOpen }) => {
   const handleUpload = async () => {
     try {
       const formData = new FormData();
-      formData.append("app_token", "wda1E2CphYPXTsELRe0D");
+      formData.append("app_token", API_TOKEN);
       formData.append("pdf_file", file ? file : "");
 
       const response = await axios.post(
-        "http://64.227.165.222:8000/add-convert-pdf-image/",
+        `${BASE_URL}/add-convert-pdf-image/`,
         formData,
         {
           headers: {

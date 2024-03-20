@@ -12,6 +12,7 @@ import Drawing1 from "../../assets/SECURITY.png";
 import Drawing2 from "../../assets/SECURITY2.png";
 import Drawing3 from "../../assets/FLOOR.png";
 import axios from "axios";
+import { API_TOKEN, BASE_URL } from "../../utils/environment";
 
 interface dataProps {
   title: string;
@@ -62,8 +63,8 @@ const DocumentAccordians: React.FC<DocumentModalProps> = ({ setImgURL }) => {
 
     try {
       const response = await axios.post(
-        "http://64.227.165.222:8000/list-pdf-details/",
-        { app_token: "wda1E2CphYPXTsELRe0D" }
+        `${BASE_URL}/list-pdf-details/`,
+        { app_token: API_TOKEN }
       );
       console.log("response", response.data);
     } catch (error) {

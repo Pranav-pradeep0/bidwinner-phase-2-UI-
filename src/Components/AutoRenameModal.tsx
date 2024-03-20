@@ -23,6 +23,7 @@ import SECURITY2 from "../assets/SECURITY2.png";
 import FLOOR from "../assets/FLOOR.png";
 import ImageZoomcomponent from "./ImageZoomcomponent";
 import axios from "axios";
+import { API_TOKEN, BASE_URL } from "../utils/environment";
 
 const style = {
   position: "absolute" as "absolute",
@@ -163,13 +164,13 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
 
   const handleUploadCoords = async () => {
     const data = {
-      app_token: "wda1E2CphYPXTsELRe0D",
+      app_token: API_TOKEN,
       pdf_id: "",
       coords: coords,
     };
     try {
       const res = await axios.post(
-        "http://64.227.165.222:8000/add-auto-rename-image",
+        `${BASE_URL}/add-auto-rename-image`,
         data
       );
       console.log(res.data);
@@ -247,6 +248,7 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
                 src={dummyImages[currentIndex]}
                 // rectCoordinates={rectCoordinates}
                 setRectCoordinates={setRectCoordinates}
+                toolMethods={{select:true}}
               />
             </Box>
           </Box>
