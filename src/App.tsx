@@ -1,5 +1,6 @@
 import "./App.css";
-import Toolbar from "./Components/Toolbar";
+import StampsModal from "./Components/StampsModal";
+// import Toolbar from "./Components/Toolbar";
 // import DisplayPage from "./Components/DisplayPage";
 // import SelectDcoumentModal from "./Components/SelectDcoumentModal";
 // import UploadFileModal from "./Components/UploadFileModal";
@@ -7,7 +8,7 @@ import Toolbar from "./Components/Toolbar";
 // import AutoRenameModal from "./Components/AutoRenameModal";
 // import DrawingScaleModal from "./Components/DrawingScaleModal";
 // import ShareAsEmailModal from "./Components/ShareAsEmailModal";
-// import TakeoffMainPage from "../src/Components/Takeoff/TakeoffMainPage"
+// import TakeoffMainPage from "../src/Components/Takeoff/TakeoffMainPage";
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
       {/* <SelectDcoumentModal/> */}
       {/* <DisplayPage /> */}
       {/* <TakeoffMainPage /> */}
-      <Toolbar/>
+      {/* <Toolbar/> */}
+      <StampsModal/>
     </>
   );
 }
