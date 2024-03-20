@@ -9,11 +9,13 @@ interface Coordinate {
 interface ImageZoomProps {
   src: string;
   setRectCoordinates: any;
+  toolMethods: any;
 }
 
 const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
   src,
   setRectCoordinates,
+  toolMethods
 }) => {
   const [dimensions] = useImageSize(src);
   const [isPanning, setPanning] = useState(false);
@@ -28,11 +30,6 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
 
   // console.log(rectCoordinates);
 
-  const nodes = {
-    pan: true,
-    dot: false,
-    rectangleSelect: true,
-  };
 
   const [clickCoordinates, setClickCoordinates] = useState<Coordinate[]>([]);
 
@@ -47,7 +44,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
   });
 
   const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (nodes.dot) {
+    if (toolMethods.dot) {
       const rect = imgRef.current!.getBoundingClientRect();
       const scaleX = image!.width / rect.width;
       const scaleY = image!.height / rect.height;
@@ -74,7 +71,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
-    if (nodes.rectangleSelect) {
+    if (toolMethods.select) {
       setFinalRect(null);
       const rect = imgRef.current!.getBoundingClientRect();
       const scaleX = image!.width / rect.width;
@@ -120,7 +117,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
   };
 
   const onMouseUp = () => {
-    console.log("mouseUp");
+    setPanning(false)
     setIsDrawing(false);
     setFinalRect({ start: rectStart, end: rectEnd });
   };
@@ -156,13 +153,11 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
           sign,
         z: position.z * scale,
       });
-
-      console.log("position", position);
     }
   };
 
   useEffect(() => {
-    if (nodes.pan) {
+    if (toolMethods.pan) {
       const mouseup = () => {
         setPanning(false);
       };
@@ -189,21 +184,8 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
     }
   });
 
-  // console.log(isDrawing);
-
-  // console.log("coordinates", rectCoordinates);
-
   return (
     <>
-      {/* <div>
-        <div>Dot Count {clickCoordinates.length}</div>
-        <button onClick={() => setNodes((prev) => ({ ...prev, dot: true }))}>
-          add dot
-        </button>
-        <button onClick={() => setNodes((prev) => ({ ...prev, dot: false }))}>
-          stop dot
-        </button>
-      </div> */}
       <div
         ref={containerRef}
         onMouseDown={onMouseDown}
