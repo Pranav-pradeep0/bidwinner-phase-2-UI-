@@ -184,6 +184,12 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
     }
   });
 
+  const handleDotClick = (index: number) => {
+    const orginalValues = [...clickCoordinates]
+    const updatedValues = orginalValues.filter((_: any, ind: number) => ind !== index)
+    setClickCoordinates(updatedValues)
+  }
+
   return (
     <>
       <div
@@ -229,6 +235,7 @@ const ImageZoomcomponent: React.FC<ImageZoomProps> = ({
                   left: `${dot.left}%`,
                   top: `${dot.top}%`,
                 }}
+                onClick={() => handleDotClick(ind)}
               />
             );
           })}
