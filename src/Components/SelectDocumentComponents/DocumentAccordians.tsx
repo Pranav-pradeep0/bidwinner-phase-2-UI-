@@ -8,43 +8,30 @@ import {
 import { CaretDown, FolderNotch } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 
-import Drawing1 from "../../assets/SECURITY.png";
-import Drawing2 from "../../assets/SECURITY2.png";
-import Drawing3 from "../../assets/FLOOR.png";
+// import Drawing1 from "../../assets/SECURITY.png";
+// import Drawing2 from "../../assets/SECURITY2.png";
+// import Drawing3 from "../../assets/FLOOR.png";
 import axios from "axios";
 import { API_TOKEN, BASE_URL } from "../../utils/environment";
 
 interface dataProps {
-  title: string;
-  items: any;
+  pdf_name: string;
+  images: any;
+  pdf_id: any;
 }
-
-const data: dataProps[] = [
-  {
-    title: "Al Hasan Building Drawing Electrical Estimation Document.pdf",
-    items: [
-      { title: "Page No 1", url: Drawing1 },
-      { title: "Page No 2", url: Drawing2 },
-      { title: "Page No 3", url: Drawing3 },
-    ],
-  },
-  {
-    title: "Al Jaseera Appartment Drawing Electrical Estimation Document.pdf",
-    items: [
-      { title: "Page No 1", url: Drawing1 },
-      { title: "Page No 2", url: Drawing2 },
-      { title: "Page No 3", url: Drawing3 },
-    ],
-  },
-];
 
 interface DocumentModalProps {
   setImgURL: any;
+  setPdfId: any;
 }
 
-const DocumentAccordians: React.FC<DocumentModalProps> = ({ setImgURL }) => {
+const DocumentAccordians: React.FC<DocumentModalProps> = ({
+  setImgURL,
+  setPdfId,
+}) => {
   const [expanded, setExpanded] = useState<string | false>(false);
   const [title, setTitle] = useState("");
+  const [data, setData] = useState<dataProps[]>([]);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -53,20 +40,21 @@ const DocumentAccordians: React.FC<DocumentModalProps> = ({ setImgURL }) => {
       setTitle("");
     };
 
-  const handleClickTitle = (title: string, url: string) => {
+  const handleClickTitle = (title: string, url: string, pdfId: string) => {
     setImgURL(url);
     setTitle(title);
+    setPdfId(pdfId);
   };
 
   const fetchData = async () => {
     console.log("abc");
 
     try {
-      const response = await axios.post(
-        `${BASE_URL}/list-pdf-details/`,
-        { app_token: API_TOKEN }
-      );
+      const response = await axios.post(`${BASE_URL}/list-pdf-details/`, {
+        app_token: API_TOKEN,
+      });
       console.log("response", response.data);
+      setData(response.data);
     } catch (error) {
       console.error("Error while fetching document details:", error);
     }
@@ -101,11 +89,11 @@ const DocumentAccordians: React.FC<DocumentModalProps> = ({ setImgURL }) => {
           >
             <FolderNotch size={22} />
             <Typography sx={{ fontWeight: 500, marginInline: "10px" }}>
-              {data.title}
+              {data.pdf_name}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {data.items.map((items: any, ind: number) => (
+            {data.images.map((items: any, ind: number) => (
               <Box
                 key={ind}
                 sx={{
@@ -117,9 +105,15 @@ const DocumentAccordians: React.FC<DocumentModalProps> = ({ setImgURL }) => {
                   backgroundColor: title === items.title ? "#E3F3FF" : "",
                   ":hover": { backgroundColor: "#E3F3FF" },
                 }}
-                onClick={() => handleClickTitle(items.title, items.url)}
+                onClick={() =>
+                  handleClickTitle(
+                    items.image_name,
+                    items.thumbnail,
+                    data.pdf_id
+                  )
+                }
               >
-                {items.title}
+                {items.image_name}
               </Box>
             ))}
           </AccordionDetails>

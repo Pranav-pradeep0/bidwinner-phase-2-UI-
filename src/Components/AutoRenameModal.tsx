@@ -54,9 +54,16 @@ const childStyle = {
 interface RenameModalProps {
   open: boolean;
   setOpen: any;
+  imgURL: string;
+  pdfId: string;
 }
 
-const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
+const AutoRenameModal: React.FC<RenameModalProps> = ({
+  open,
+  setOpen,
+  imgURL,
+  pdfId,
+}) => {
   // const [open, setOpen] = useState(false);
   const [nestedOpen, setNestedOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -163,21 +170,28 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
   console.log(coords);
 
   const handleUploadCoords = async () => {
+    const roundedCoords = `${Math.round(parseFloat(coords.TopX))},${Math.round(
+      parseFloat(coords.TopY)
+    )},${Math.round(parseFloat(coords.BottomX))},${Math.round(
+      parseFloat(coords.BottomY)
+    )}`;
+    console.log(roundedCoords);
+
     const data = {
       app_token: API_TOKEN,
-      pdf_id: "",
-      coords: coords,
+      pdf_id: pdfId,
+      coords: roundedCoords,
     };
+
     try {
-      const res = await axios.post(
-        `${BASE_URL}/add-auto-rename-image`,
-        data
-      );
+      const res = await axios.post(`${BASE_URL}/add-auto-rename-image/`, data);
       console.log(res.data);
     } catch (err) {
       console.log(err);
     }
   };
+
+  console.log(imgURL);
 
   return (
     <Box>
@@ -238,19 +252,18 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
               },
             }}
           >
-            <Box
+            {/* <Box
               sx={{
                 transform: `scale(${zoomLevel})`,
                 transition: "transform 0.5s ease",
               }}
-            >
-              <ImageZoomcomponent
-                src={dummyImages[currentIndex]}
-                // rectCoordinates={rectCoordinates}
-                setRectCoordinates={setRectCoordinates}
-                toolMethods={{select:true}}
-              />
-            </Box>
+            > */}
+            <ImageZoomcomponent
+              src={`${BASE_URL}${imgURL}`}
+              setRectCoordinates={setRectCoordinates}
+              toolMethods={{ select: true }}
+            />
+            {/* </Box> */}
           </Box>
           <Box
             sx={{
@@ -303,7 +316,7 @@ const AutoRenameModal: React.FC<RenameModalProps> = ({ open, setOpen }) => {
                 background:
                   "linear-gradient(95.67deg, #4776E6 0%, #7B54E9 95.18%)",
               }}
-              onClick={handleNestedOpen}
+              onClick={handleUploadCoords}
             >
               Rename
             </Button>

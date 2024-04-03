@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   IconButton,
   Modal,
@@ -9,7 +10,7 @@ import {
 } from "@mui/material";
 import Upload from "../assets/Upload.svg";
 import { X } from "@phosphor-icons/react";
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 import { API_TOKEN, BASE_URL } from "../utils/environment";
 
 const style = {
@@ -29,13 +30,24 @@ interface UploadFileModalProps {
 }
 
 const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, setOpen }) => {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [cancelToken, setCancelToken] = useState<CancelTokenSource | null>(
+    null
+  );
 
   const handleUpload = async () => {
     try {
+      setUploading(true);
       const formData = new FormData();
       formData.append("app_token", API_TOKEN);
       formData.append("pdf_file", file ? file : "");
+      formData.append("pdf_title", file ? file.name : "");
+
+      const cancelTokenSource = axios.CancelToken.source();
+      setCancelToken(cancelTokenSource);
 
       const response = await axios.post(
         `${BASE_URL}/add-convert-pdf-image/`,
@@ -44,19 +56,36 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, setOpen }) => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
+          onUploadProgress: (progressEvent: any) => {
+            const progress = Math.round(
+              (progressEvent.loaded / progressEvent.total) * 100
+            );
+            setUploadProgress(progress);
+          },
+          cancelToken: cancelTokenSource.token,
         }
       );
 
       console.log("API Response:", response);
+      setUploadSuccess(true);
     } catch (error) {
-      console.error("Error while uploading PDF file:", error);
+      if (axios.isCancel(error)) {
+        console.log("Upload canceled", error.message);
+      } else {
+        console.error("Error while uploading PDF file:", error);
+      }
+    } finally {
+      setUploading(false);
+      setCancelToken(null);
     }
   };
 
-  // const handleOpen = () => setOpen(true);
   const handleClose = () => {
+    if (cancelToken) {
+      cancelToken.cancel("Upload canceled by user");
+    }
     setOpen(false);
-    setFile(null); // Reset file when closing modal
+    setFile(null);
   };
 
   const handleFileInputChange = (event: any) => {
@@ -161,17 +190,56 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, setOpen }) => {
               </label>
             </Box>
           </Box>
-          <Button
-            onClick={handleUpload}
-            sx={{
-              display: "flex",
-              marginBottom: "20px",
-              marginInline: "auto",
-            }}
-            variant="contained"
-          >
-            Upload
-          </Button>
+          {file && (
+            <Box>
+              <Typography
+                sx={{
+                  color: "rgba(0, 0, 0, 0.7)",
+                  marginBlock: "20px",
+                  textAlign: "center",
+                }}
+              >
+                Selected File:{" "}
+                <span style={{ color: "#3153CD" }}>{file.name}</span>
+              </Typography>
+            </Box>
+          )}
+          {uploading ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
+            >
+              <CircularProgress
+                variant="indeterminate"
+                value={uploadProgress}
+              />
+              {/* <Typography sx={{ marginLeft: "10px" }}>
+                {uploadProgress}%
+              </Typography> */}
+            </Box>
+          ) : uploadSuccess ? (
+            <Typography
+              sx={{ textAlign: "center", color: "green", marginBlock: "20px" }}
+            >
+              Upload successful!
+            </Typography>
+          ) : (
+            <Button
+              onClick={handleUpload}
+              sx={{
+                display: "flex",
+                marginBottom: "20px",
+                marginInline: "auto",
+              }}
+              variant="contained"
+            >
+              Upload
+            </Button>
+          )}
         </Box>
       </Modal>
     </Box>

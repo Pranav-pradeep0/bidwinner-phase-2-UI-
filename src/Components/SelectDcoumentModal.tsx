@@ -5,6 +5,8 @@ import DocumentAccordians from "./SelectDocumentComponents/DocumentAccordians";
 import { X } from "@phosphor-icons/react";
 // import DrawerImage from "../assets/SECURITY.png";
 import ButtonGradient from "./reusableComponents/Button";
+import { BASE_URL } from "../utils/environment";
+import AutoRenameModal from "./AutoRenameModal";
 
 const style = {
   position: "absolute" as "absolute",
@@ -12,6 +14,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "70vw",
+  minHeight: 300,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -29,10 +32,16 @@ const SelectDcoumentModal: React.FC<DocumentModalProps> = ({
   setOpen,
 }) => {
   const [imgURL, setImgURL] = useState("");
-  // const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
+  const [pdfId, setPdfId] = useState("");
+  const [autoRenameModalOpen, setAutoRenameModalOpen] = useState(false);
+
+  console.log(pdfId);
+
   const handleClose = () => setOpen(false);
 
+  const handleRenameClick = () => {
+    setAutoRenameModalOpen(true);
+  };
 
   return (
     <Box>
@@ -45,7 +54,7 @@ const SelectDcoumentModal: React.FC<DocumentModalProps> = ({
         <Box sx={style}>
           <Box sx={{ flex: 1 }}>
             <DocumentSerchBar />
-            <DocumentAccordians setImgURL={setImgURL} />
+            <DocumentAccordians setImgURL={setImgURL} setPdfId={setPdfId} />
           </Box>
           <Box
             sx={{
@@ -58,7 +67,7 @@ const SelectDcoumentModal: React.FC<DocumentModalProps> = ({
             <Box sx={{ width: "100%", height: "70%" }}>
               {imgURL ? (
                 <img
-                  src={imgURL}
+                  src={`${BASE_URL}${imgURL}`}
                   alt=""
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -97,9 +106,12 @@ const SelectDcoumentModal: React.FC<DocumentModalProps> = ({
               cursor: "pointer",
             }}
           >
-            <ButtonGradient
-              handleClick={() => console.log("hello")}
-              title="Rename"
+            <ButtonGradient handleClick={handleRenameClick} title="Rename" />
+            <AutoRenameModal
+              open={autoRenameModalOpen}
+              setOpen={setAutoRenameModalOpen}
+              imgURL={imgURL}
+              pdfId={pdfId}
             />
           </Box>
         </Box>
